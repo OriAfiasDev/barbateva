@@ -345,16 +345,19 @@ p { margin: 0 0 var(--s3); }
   .hero__frame { top: auto; bottom: 0; height: 75vw; }
   .hero__veil { background: linear-gradient(to bottom, var(--ink) 0%, rgba(27,35,28,0) 22%, rgba(27,35,28,0) 80%, rgba(27,35,28,.45) 100%); }
   .hero__type { --fw: 100vw; }
-  .hero__name { top: 13vh; font-size: 24vw; }
-  .hero__tag { top: 22vh; font-size: 3.6vw; }
+  /* vertical positions as % of the pin (100svh), not vh – on iOS vh is the
+     taller toolbar-less viewport and the two would drift apart */
+  .hero__name { top: 13%; font-size: 24vw; }
+  .hero__tag { top: 22%; font-size: 3.6vw; }
   .hero__words {
-    position: absolute; inset-inline: var(--gutter); top: 26vh;
+    position: absolute; inset-inline: var(--gutter); top: 26%;
     display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 0 .45em;
   }
   .hero__word { position: relative; left: auto; top: auto; font-size: 28vw; line-height: .92; }
   .hero__word[data-w="5"] { order: -1; }
   .hero__word[data-w="4"] { order: 10; }
-  .hero__end { bottom: calc(75vw + 2vh); font-size: 2.9vw; white-space: normal; text-align: center; width: calc(100% - 2 * var(--gutter)); }
+  .hero__end { bottom: 3%; font-size: 3.2vw; max-width: calc(100% - 2 * var(--gutter)); background: rgba(27,35,28,.6); }
+  .hero__end-wide { display: none; }
   .hero__cue { display: none; }
 
   .name { padding-block: var(--s5) var(--s4); }
