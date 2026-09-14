@@ -1,8 +1,10 @@
 /* ברבא טבע – main.js
    Scroll-scrubbed hero: the camera is static, the motion is six hands setting
    six desserts on the board. Six words enter from the same side as each hand
-   and settle above "their" dessert. Then: word-by-word reveal, pinned stream
-   steps, nav state. No libraries. */
+   and settle above "their" dessert; at the end the nouns leave and "בר"/"בטבע"
+   close into "ברבא טבע". Then: a pinned menu strip that pans with vertical
+   scroll, word-by-word reveal, stream steps (pinned photo on desktop, one photo
+   per step on phones), staged reviews on phones, nav state. No libraries. */
 (() => {
   'use strict';
 
