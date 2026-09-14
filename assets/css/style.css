@@ -1,0 +1,431 @@
+/* ברבא טבע – style.css
+   Palette from the physical place: eucalyptus shadow, stream water, kraft bowls,
+   the oak dessert board, brûlée caramel. Display: Karantina. Body: Alef.
+   The recurring motif is the oval board from the hero video. */
+
+:root {
+  --paper: #EFE6D3;
+  --paper-2: #E4D8BF;
+  --cream: #F6F0E4;
+  --kraft: #C9A46B;
+  --kraft-2: #B08A52;
+  --oak: #E3C48C;
+  --ink: #1B231C;
+  --ink-2: #131A15;
+  --moss: #4F5E3A;
+  --water: #8A9C8C;
+  --water-2: #6F8577;
+  --caramel: #D4782A;
+  --choc: #3B2416;
+  --choc-2: #2A1A10;
+
+  --font-display: 'Karantina', 'Arial Narrow', 'Impact', sans-serif;
+  --font-body: 'Alef', 'Arial Hebrew', 'Arial', sans-serif;
+
+  /* 1.333 scale */
+  --t-1: .8rem;
+  --t0: 1rem;
+  --t1: 1.333rem;
+  --t2: 1.777rem;
+  --t3: 2.369rem;
+  --t4: 3.157rem;
+  --t5: 4.209rem;
+  --t6: clamp(3.6rem, 9vw, 8.5rem);
+  --t7: clamp(5rem, 15vw, 15rem);
+
+  --s1: .25rem; --s2: .5rem; --s3: 1rem; --s4: 2rem; --s5: 4rem; --s6: 8rem;
+  --gutter: clamp(16px, 5vw, 72px);
+  --measure: 34rem;
+  --radius-board: 50% / 40%;
+
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, .95rem + .3vw, 1.125rem);
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--ink-2);
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; line-height: 1; margin: 0; }
+p { margin: 0 0 var(--s3); }
+:focus-visible { outline: 3px solid var(--caramel); outline-offset: 3px; }
+::selection { background: var(--caramel); color: var(--cream); }
+
+/* ------------------------------------------------------------
+   Progress line
+   ------------------------------------------------------------ */
+.progress { position: fixed; inset-inline: 0; top: 0; height: 3px; z-index: 60; pointer-events: none; }
+.progress span { display: block; height: 100%; width: 100%; background: var(--caramel); transform: scaleX(0); transform-origin: right center; }
+
+/* ------------------------------------------------------------
+   Nav – transparent over the hero, paper once the page starts
+   ------------------------------------------------------------ */
+.nav {
+  position: fixed; inset-inline: 0; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: var(--s4);
+  padding: var(--s2) var(--gutter);
+  color: var(--paper);
+  transition: background-color .4s, color .4s, box-shadow .4s;
+}
+.nav.is-solid {
+  background: rgba(239, 230, 211, .92);
+  color: var(--ink);
+  box-shadow: 0 1px 0 rgba(27, 35, 28, .12);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.nav__mark { display: flex; align-items: center; gap: var(--s2); text-decoration: none; font: 700 var(--t2)/1 var(--font-display); }
+.nav__mark img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.nav__links { display: flex; gap: var(--s3); margin-inline-start: auto; }
+.nav__links a, .reviews__link a {
+  text-decoration: none; font: 400 var(--t1)/1 var(--font-display);
+  position: relative; padding-block: .2em;
+}
+.nav__links a::after, .reviews__link a::after {
+  content: ''; position: absolute; inset-inline: 0; bottom: 0; height: 2px;
+  background: var(--caramel); transform: scaleX(0); transform-origin: right center; transition: transform .3s;
+}
+.nav__links a:hover::after, .reviews__link a:hover::after { transform: scaleX(1); }
+.nav__ig {
+  font-size: var(--t-1); text-decoration: none;
+  border: 1px solid currentColor; border-radius: 999px; padding: .35em .9em;
+  transition: background-color .25s, color .25s;
+}
+.nav__ig:hover { background: var(--caramel); border-color: var(--caramel); color: var(--cream); }
+
+/* ------------------------------------------------------------
+   HERO – pinned, scroll-scrubbed video. The 16:9 frame is sized by JS to
+   cover the viewport; the type layer gets the same rect so every word sits
+   above its dessert. Physical `left/top` on purpose: these are video-pixel
+   coordinates, not reading-direction ones.
+   ------------------------------------------------------------ */
+.hero { position: relative; height: 520vh; background: var(--ink); color: var(--paper); }
+.hero__pin { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.hero__frame { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--ink); }
+.hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero__veil {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(27,35,28,.55) 0%, rgba(27,35,28,.22) 38%, rgba(27,35,28,0) 58%, rgba(27,35,28,.35) 100%);
+}
+.hero__type { position: absolute; left: 0; top: 0; width: 100%; height: 100%; --fw: 100vw; }
+.hero__name {
+  position: absolute; left: 50%; top: 21%; transform: translate(-50%, -50%);
+  font-weight: 300; font-size: calc(var(--fw) * .17); line-height: .9; letter-spacing: -.01em;
+  white-space: nowrap; text-shadow: 0 2px 40px rgba(0,0,0,.35);
+}
+.hero__tag {
+  position: absolute; left: 50%; top: 34%; transform: translate(-50%, -50%);
+  margin: 0; font-size: calc(var(--fw) * .02); letter-spacing: .04em; white-space: nowrap;
+}
+.hero__words { list-style: none; margin: 0; padding: 0; }
+.hero__word {
+  position: absolute; left: var(--x); top: var(--y); transform: translate(-50%, -50%);
+  margin: 0; font-family: var(--font-display); font-weight: 300; line-height: 1;
+  font-size: calc(var(--fw) * .1); white-space: nowrap; opacity: 0;
+  text-shadow: 0 2px 30px rgba(0,0,0,.35); will-change: transform, opacity;
+  transition: color .8s;
+}
+.hero__word--name { font-weight: 700; }
+.hero__word--name.is-set { color: var(--oak); }
+/* "בטבע" splits into ב | א␣ | טבע at the very end, so the two name words can
+   close up into "ברבא טבע". The alef sits out of flow so widths stay stable. */
+.hero__j { display: inline-block; will-change: transform; }
+.hero__alef { position: absolute; top: 0; opacity: 0; white-space: pre; pointer-events: none; }
+.hero__end {
+  position: absolute; left: 50%; bottom: 5%; transform: translateX(-50%);
+  margin: 0; font-size: calc(var(--fw) * .014); letter-spacing: .06em; white-space: nowrap; opacity: 0;
+  padding: .5em 1.2em; border: 1px solid rgba(239,230,211,.35); border-radius: 999px;
+  background: rgba(27,35,28,.35);
+}
+.hero__cue {
+  position: absolute; inset-inline: 0; bottom: 2.2vh; margin: 0; text-align: center;
+  font-size: var(--t-1); letter-spacing: .2em; opacity: .85; transition: opacity .4s;
+}
+.hero__cue i { display: block; width: 1px; height: 28px; margin: 6px auto 0; background: var(--paper); animation: cue 1.6s ease-in-out infinite; }
+@keyframes cue { 0%, 100% { transform: scaleY(.3); transform-origin: top; opacity: .4 } 50% { transform: scaleY(1); opacity: 1 } }
+.hero__cue.is-hidden { opacity: 0; }
+
+/* ------------------------------------------------------------
+   THE NAME – type is the graphic
+   ------------------------------------------------------------ */
+.name { position: relative; overflow: hidden; background: var(--paper); color: var(--ink); padding: var(--s6) var(--gutter) var(--s5); }
+.name__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s4) var(--s5); align-items: end; }
+.name__big {
+  position: relative; z-index: 1; font-weight: 300; font-size: clamp(6rem, 21vw, 19rem); line-height: .82;
+  letter-spacing: -.02em; margin: 0 0 0 -.03em;
+}
+.name__w { display: inline-block; }
+.name__w--b { font-weight: 700; }
+.name__dot { color: var(--caramel); font-weight: 700; }
+.name__body { padding-bottom: .6rem; }
+.reveal { font-size: var(--t2); line-height: 1.45; font-family: var(--font-display); font-weight: 400; max-width: 22ch; }
+.reveal .w { transition: opacity .35s, color .35s; opacity: .22; }
+.reveal .w.is-on { opacity: 1; }
+.name__meta { font-size: var(--t0); color: var(--moss); margin: 0; }
+.name__oval {
+  position: absolute; z-index: 0; pointer-events: none; color: var(--caramel);
+  inset-inline-start: calc(var(--gutter) - 3vw); top: calc(var(--s6) - 2.5vw);
+  width: clamp(12rem, 31vw, 30rem); height: clamp(8rem, 20vw, 19rem); opacity: .9;
+}
+.name__oval path { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.6, 0, .2, 1); }
+.name__oval.is-drawn path { stroke-dashoffset: 0; }
+
+/* ------------------------------------------------------------
+   MENU – dense: a horizontal strip of oval boards, staggered
+   ------------------------------------------------------------ */
+.menu { background: #E7D6B4; color: var(--choc); padding-block: var(--s5) var(--s6); }
+.menu__head {
+  padding-inline: var(--gutter); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--s3) var(--s4); align-items: end; margin-bottom: var(--s4);
+}
+.menu__title { font-size: var(--t6); line-height: .9; }
+.menu__lead { font-size: var(--t1); line-height: 1.6; max-width: var(--measure); margin: 0; }
+.menu__strip {
+  list-style: none; margin: 0; padding: var(--s2) var(--gutter) var(--s3);
+  display: flex; gap: var(--s4); overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--gutter); -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: var(--kraft-2) transparent;
+}
+.dish { flex: 0 0 clamp(230px, 24vw, 320px); scroll-snap-align: start; }
+.dish:nth-child(even) { margin-top: var(--s5); }
+.dish__fig { margin: 0; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-board); background: var(--kraft-2); }
+.dish__fig img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+.dish:hover .dish__fig img { transform: scale(1.05); }
+.dish__name { font-size: var(--t4); margin: var(--s3) 0 var(--s1); }
+.dish__desc { margin: 0; line-height: 1.55; }
+
+/* JS-enhanced (motion allowed): the section pins full-height and downward
+   scroll pans the strip sideways instead of scrolling the page; once the strip
+   runs out the page continues. Without JS, or with reduced motion, the rules
+   above stand: a plain horizontal-scroll strip. */
+.menu.is-pinned { padding-block: 0; block-size: calc(100vh + var(--menu-extra, 0px)); block-size: calc(100svh + var(--menu-extra, 0px)); }
+.menu.is-pinned .menu__pin {
+  position: sticky; inset-block-start: 0; block-size: 100vh; block-size: 100svh; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: center; padding-block: var(--s4) var(--s2);
+}
+.menu.is-pinned .menu__head { flex: 0 0 auto; margin-bottom: var(--s3); }
+.menu.is-pinned .dish { flex-basis: clamp(220px, 22vw, 300px); }
+.menu.is-pinned .menu__strip { flex: 0 0 auto; overflow: visible; scroll-snap-type: none; will-change: transform; }
+
+/* ------------------------------------------------------------
+   SWEETS – breathes: chocolate ground, one repeating type band
+   ------------------------------------------------------------ */
+.sweets { background: var(--choc); color: var(--cream); padding-block: 0 var(--s6); overflow: hidden; }
+.sweets__band {
+  overflow: hidden; white-space: nowrap; color: var(--kraft);
+  border-block: 1px solid rgba(239,230,211,.16); padding-block: var(--s2);
+  font-family: var(--font-display); font-weight: 300; font-size: var(--t4); line-height: 1;
+}
+.sweets__track { display: inline-flex; animation: band 42s linear infinite; }
+.sweets__track span { padding-inline-end: .4em; }
+@keyframes band { to { transform: translateX(50%); } }
+.sweets__grid {
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 3fr);
+  gap: var(--s4); padding-inline: var(--gutter); margin-top: var(--s5); align-items: center;
+}
+.sweets__title { font-weight: 300; font-size: var(--t7); line-height: .85; color: var(--oak); margin-bottom: var(--s3); }
+.sweets__text p { font-size: var(--t1); line-height: 1.65; max-width: 30rem; }
+.sweets__fig { margin: 0; overflow: hidden; border-radius: var(--radius-board); aspect-ratio: 3 / 4; }
+.sweets__fig img { width: 100%; height: 100%; object-fit: cover; }
+.sweets__fig--b { margin-top: 38%; }
+
+/* ------------------------------------------------------------
+   STREAM – pinned image, steps scroll beside it
+   ------------------------------------------------------------ */
+.stream { background: var(--water); color: var(--ink); padding: var(--s6) var(--gutter); }
+.stream__title { font-size: var(--t6); line-height: .9; max-width: 12ch; margin-bottom: var(--s5); }
+.stream__layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s5); align-items: start; }
+.stream__sticky { position: sticky; top: 10vh; }
+.stream__frame { position: relative; aspect-ratio: 4 / 5; max-height: 80vh; border-radius: var(--radius-board); overflow: hidden; background: var(--water-2); }
+.stream__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .55s ease; }
+.stream__img.is-on { opacity: 1; }
+.stream__steps { list-style: none; margin: 0; padding: 0; }
+.step { min-height: 62vh; display: flex; flex-direction: column; justify-content: center; opacity: .38; transition: opacity .4s; }
+.step:last-child { min-height: 50vh; }
+.step.is-on { opacity: 1; }
+.step__fig { display: none; }   /* phones only: each step carries its own photo (JS moves them) */
+.step__n { font-family: var(--font-display); font-weight: 300; font-size: var(--t5); line-height: 1; color: var(--cream); }
+.step h3 { font-size: var(--t5); margin: var(--s1) 0 var(--s2); }
+.step p { font-size: var(--t1); line-height: 1.5; margin: 0; max-width: 22rem; }
+
+.know { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--s3) var(--s4); margin-top: var(--s5); padding-top: var(--s4); border-top: 1px solid rgba(27,35,28,.28); }
+.know h3 { font-size: var(--t4); }
+.know ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+.know li { display: flex; gap: var(--s3); align-items: baseline; font-size: var(--t1); line-height: 1.5; }
+.know li::before { content: ''; flex: 0 0 auto; inline-size: 1.1em; block-size: .55em; border: 2px solid var(--caramel); border-radius: 50%; transform: translateY(-.15em); }
+
+/* ------------------------------------------------------------
+   RANGERS – small band
+   ------------------------------------------------------------ */
+.rangers { background: var(--paper-2); color: var(--choc); display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: var(--s5); padding: var(--s5) var(--gutter); align-items: center; }
+.rangers__fig { margin: 0; max-width: 420px; aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius-board); justify-self: end; }
+.rangers__fig img { width: 100%; height: 100%; object-fit: cover; }
+.rangers h2 { font-size: var(--t5); margin-bottom: var(--s3); max-width: 16ch; }
+.rangers p { font-size: var(--t1); line-height: 1.6; max-width: var(--measure); }
+.rangers__contact a { color: var(--caramel); text-decoration-thickness: 2px; text-underline-offset: .2em; }
+
+/* ------------------------------------------------------------
+   REVIEWS – dense on dark
+   ------------------------------------------------------------ */
+.reviews { background: var(--ink); color: var(--paper); padding: var(--s6) var(--gutter); }
+.reviews__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s4); }
+.reviews h2 { font-size: var(--t6); line-height: .9; }
+.reviews__meta { margin: 0; color: var(--water); }
+.reviews__meta b { font: 700 var(--t3)/1 var(--font-display); color: var(--oak); }
+.reviews__list { list-style: none; margin: 0; padding: 0; columns: 3; column-gap: var(--s4); }
+.quote {
+  break-inside: avoid; margin: 0 0 var(--s4); padding: var(--s3) var(--s4);
+  border: 1px solid rgba(239,230,211,.18); border-radius: 44px / 26px;
+  transition: border-color .3s, transform .3s;
+}
+.quote:hover { border-color: var(--kraft); transform: translateY(-3px); }
+.quote p { font-size: var(--t1); line-height: 1.55; margin-bottom: var(--s3); }
+.quote--tall p { font-family: var(--font-display); font-weight: 300; font-size: var(--t3); line-height: 1.12; }
+.quote footer { font-size: var(--t0); color: var(--water); }
+.quote__stars { color: var(--caramel); letter-spacing: .08em; margin-inline-end: .5em; font-size: .9em; }
+.quote__stars i { font-style: normal; opacity: .3; }
+.reviews__link { margin: 0; }
+.reviews__link a { color: var(--oak); }
+
+/* ------------------------------------------------------------
+   VISIT – hours as big type, a hand-drawn schematic
+   ------------------------------------------------------------ */
+.visit { background: linear-gradient(to bottom, var(--ink), var(--ink-2)); color: var(--paper); padding: var(--s6) var(--gutter) var(--s5); }
+.visit__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--s5) var(--s4); }
+.visit h2 { font-weight: 300; font-size: var(--t7); line-height: .85; margin-bottom: var(--s4); }
+.hours { margin: 0; display: grid; gap: var(--s2); max-width: 30rem; }
+.hours div { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); padding-bottom: var(--s2); border-bottom: 1px solid rgba(239,230,211,.18); font: 400 var(--t4)/1 var(--font-display); }
+.hours dd { margin: 0; font-weight: 700; color: var(--oak); direction: ltr; unicode-bidi: isolate; }
+.visit__note { margin-top: var(--s3); color: var(--water); }
+.visit__where { align-self: end; }
+.visit__addr { font-family: var(--font-display); font-weight: 300; font-size: var(--t3); line-height: 1.15; margin-bottom: var(--s4); }
+.visit__links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); }
+.visit__links a {
+  display: inline-block; padding: .55em 1.3em; border: 1.5px solid var(--kraft); border-radius: 999px;
+  text-decoration: none; font-family: var(--font-display); font-size: var(--t1); line-height: 1;
+  transition: background-color .25s, color .25s, transform .25s;
+}
+.visit__links a:hover { background: var(--kraft); color: var(--ink); transform: translateY(-2px); }
+.visit__map { grid-column: 1 / -1; margin: 0; }
+.visit__map iframe {
+  display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 70vh; border: 0;
+  border-radius: 44px / 26px; filter: saturate(.8) contrast(1.05);
+}
+.visit__map figcaption { margin-top: var(--s2); color: var(--water); font-size: var(--t0); }
+
+/* ------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------ */
+.foot { color: var(--paper); padding: var(--s4) var(--gutter) var(--s5); border-top: 1px solid rgba(239,230,211,.14); }
+.foot__name { font: 300 var(--t3)/1 var(--font-display); margin-bottom: var(--s2); }
+.foot__small { margin: 0; font-size: var(--t-1); color: var(--water); }
+.foot__small a { color: var(--oak); }
+
+/* ------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------ */
+@media (max-width: 1000px) {
+  .reviews__list { columns: 2; }
+  .sweets__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .sweets__text { grid-column: 1 / -1; }
+  .sweets__fig--b { margin-top: 20%; }
+}
+@media (max-width: 760px) {
+  .nav { gap: var(--s3); }
+  .nav__links { display: none; }
+  .nav__mark span { font-size: var(--t1); }
+
+  /* hero on phones: the 4:3 crop sits as a band at the bottom, type lives above it */
+  .hero { height: 440vh; }
+  .hero__frame { top: auto; bottom: 0; height: 75vw; }
+  .hero__veil { background: linear-gradient(to bottom, var(--ink) 0%, rgba(27,35,28,0) 22%, rgba(27,35,28,0) 80%, rgba(27,35,28,.45) 100%); }
+  .hero__type { --fw: 100vw; }
+  .hero__name { top: 13vh; font-size: 24vw; }
+  .hero__tag { top: 22vh; font-size: 3.6vw; }
+  .hero__words {
+    position: absolute; inset-inline: var(--gutter); top: 26vh;
+    display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 0 .45em;
+  }
+  .hero__word { position: relative; left: auto; top: auto; font-size: 28vw; line-height: .92; }
+  .hero__word[data-w="5"] { order: -1; }
+  .hero__word[data-w="4"] { order: 10; }
+  .hero__end { bottom: calc(75vw + 2vh); font-size: 2.9vw; white-space: normal; text-align: center; width: calc(100% - 2 * var(--gutter)); }
+  .hero__cue { display: none; }
+
+  .name { padding-block: var(--s5) var(--s4); }
+  .name__grid { grid-template-columns: 1fr; }
+  .name__big { font-size: 26vw; }
+  .reveal { max-width: none; font-size: var(--t2); }
+  .name__oval { width: 44vw; height: 26vw; inset-inline-start: calc(var(--gutter) - 5vw); top: calc(var(--s5) - 3vw); }
+
+  .menu__head { grid-template-columns: 1fr; }
+  .dish { flex-basis: 68vw; }
+  .dish:nth-child(even) { margin-top: var(--s4); }
+  .menu.is-pinned .menu__pin { padding-block: 72px var(--s2); justify-content: flex-start; }
+  .menu.is-pinned .menu__lead { font-size: var(--t0); }
+  .menu.is-pinned .dish { flex-basis: 56vw; }
+  .menu.is-pinned .dish:nth-child(even) { margin-top: var(--s3); }
+
+  .sweets__grid { grid-template-columns: 1fr 1fr; gap: var(--s3); }
+  .sweets__fig--b { margin-top: 30%; }
+
+  /* the stream on phones: no pinning – every step sits beside its own photo */
+  .stream { padding-block: var(--s5); }
+  .stream__title { margin-bottom: var(--s4); }
+  .stream__layout { grid-template-columns: 1fr; gap: 0; }
+  .stream__sticky { display: none; }
+  .stream__steps { display: grid; gap: var(--s4); }
+  .step {
+    min-height: 0; opacity: 1; display: grid; column-gap: var(--s3); align-items: start;
+    grid-template-columns: 36vw minmax(0, 1fr);
+    grid-template-areas: "fig n" "fig h" "fig p";
+  }
+  .step:last-child { min-height: 0; }
+  .step__fig { display: block; grid-area: fig; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-board); background: var(--water-2); }
+  .step__fig .stream__img { position: static; opacity: 1; transition: none; }
+  .step__n { grid-area: n; font-size: var(--t3); }
+  .step h3 { grid-area: h; font-size: var(--t3); margin: 0 0 var(--s1); }
+  .step p { grid-area: p; font-size: var(--t0); }
+  .know { grid-template-columns: 1fr; }
+
+  /* reviews on phones: each quote steps in as it reaches the screen (JS arms .is-staged) */
+  .reviews.is-staged .quote { opacity: .15; transform: translate3d(16px, 14px, 0); transition: opacity .38s ease-out, transform .38s cubic-bezier(.2, .7, .2, 1); }
+  .reviews.is-staged .quote:nth-child(even) { transform: translate3d(-16px, 14px, 0); }
+  .reviews.is-staged .quote.is-in { opacity: 1; transform: none; }
+
+  .rangers { grid-template-columns: 1fr; gap: var(--s3); }
+  .rangers__fig { justify-self: start; max-width: 70vw; }
+
+  .reviews__list { columns: 1; }
+  .visit__grid { grid-template-columns: 1fr; }
+  .hours div { font-size: var(--t3); }
+}
+
+/* ------------------------------------------------------------
+   Reduced motion: nothing animates, end states shown
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero { height: auto; }
+  .hero__pin { position: relative; height: 100svh; }
+  .hero__name, .hero__tag { opacity: 0 !important; }
+  .hero__end { opacity: 1 !important; }
+  .hero__cue { display: none; }
+  .hero__word--name { color: var(--oak); }
+  .sweets__track { animation: none; }
+  .reveal .w { opacity: 1; }
+  .name__oval path { stroke-dashoffset: 0; transition: none; }
+  .step { opacity: 1; }
+  .stream__img { transition: none; }
+  .quote, .visit__links a, .dish__fig img, .nav, .nav__links a::after { transition: none; }
+  /* defensive: JS never adds is-pinned under reduced motion, but if it did, keep the plain strip */
+  .menu.is-pinned { block-size: auto; padding-block: var(--s5) var(--s6); }
+  .menu.is-pinned .menu__pin { position: static; block-size: auto; overflow: visible; display: block; }
+  .menu.is-pinned .menu__strip { transform: none !important; overflow-x: auto; scroll-snap-type: x mandatory; }
+}
